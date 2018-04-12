@@ -1,0 +1,33 @@
+@mixin font () {
+    font-family: "Helvetica Neue", Helvetica, sans-serif;
+    width: auto;
+    font-weight: bold;
+    font-size: 2vh;
+    line-height: 20px;
+}
+
+.cards {
+    @include font
+    cursor: pointer;
+    border-radius: 6px;
+    height: 25vh;
+    width: 18vh;
+    margin: 20px;
+    border: 2px solid black;
+
+    p {
+        margin: 8%;
+    }
+}
+
+.black {
+    background: black;
+    color: white;
+}
+
+.white {
+    background: white;
+    color: black;
+}
+
+

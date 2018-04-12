@@ -15,5 +15,10 @@
   "bugs": {
     "url": "https://github.com/eutopian/scratch_project_elms_CAH/issues"
   },
-  "homepage": "https://github.com/eutopian/scratch_project_elms_CAH#readme"
+  "homepage": "https://github.com/eutopian/scratch_project_elms_CAH#readme",
+  "dependencies": {
+    "body-parser": "^1.18.2",
+    "cookie-parser": "^1.4.3",
+    "express": "^4.16.3"
+  }
 }

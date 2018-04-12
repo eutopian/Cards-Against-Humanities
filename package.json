@@ -1,0 +1,19 @@
+{
+  "name": "scratch_project_elms_cah",
+  "version": "1.0.0",
+  "description": "cards against humanities web 2.0",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/eutopian/scratch_project_elms_CAH.git"
+  },
+  "author": "ELMS",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/eutopian/scratch_project_elms_CAH/issues"
+  },
+  "homepage": "https://github.com/eutopian/scratch_project_elms_CAH#readme"
+}

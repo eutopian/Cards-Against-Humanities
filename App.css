@@ -37,7 +37,6 @@ p {
 .bottom {
     margin: auto;
     height: 34vh;
-    width: 76.5%;
     border: 2px solid black;
     padding: 30px 0;
     grid-column: 1/6;

@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import Room from './Room';
 import './App.css';
 import fetch from 'isomorphic-fetch';
+import socketIOClient from "socket.io-client";
 
 class App extends Component {
   constructor(props) {
@@ -13,6 +14,17 @@ class App extends Component {
       waitingRoom: true
     }
   }
+
+  componentDidMount() {
+    debugger
+    console.log(this.state.numberOfUsers)
+    const { endpoint } = this.state;
+    const socket = socketIOClient(endpoint);
+    let num = this.state.numberOfUsers++
+    socket.on("FromAPI", () => this.setState({ numberOfUsers: num }));
+    console.log(this.state.numberOfUsers)
+  }
+  
   render() {
     return (
       <div>

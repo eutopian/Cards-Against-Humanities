@@ -1,8 +1,14 @@
 import React from 'react';
 
-const BlackCard = () => {
+const BlackCard = (props) => {
+  const {blackText} = props;
+
   return (
-    <div>Black Card</div>
+    <div class="black-div">
+      <div class="cards black">
+          <p> {blackText}</p>
+      </div>
+    </div>
   )
 }
 

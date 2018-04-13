@@ -1,8 +1,10 @@
-import React from 'react';
+import React, { PropTypes } from  'react';
 
-const Players = () => {
+const Players = (props) => {
+  const { eachUser, score} = props;
+
   return (
-    <div>Player List</div>
+   <p> {eachUser} : {score}</p>
   )
 }
 

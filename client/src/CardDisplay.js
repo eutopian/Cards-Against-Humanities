@@ -2,9 +2,14 @@ import React from 'react';
 import WhiteTurn from './WhiteTurn';
 import BlackTurn from './BlackTurn';
 
-const CardDisplay = () => {
+const CardDisplay = (props) => {
+  const {text} = props;
+
   return (
-    <div>Cards display</div>
+    <div class="cards white">
+      <p>{text}</p>
+    </div>
+
   )
 }
 

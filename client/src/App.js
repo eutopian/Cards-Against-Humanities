@@ -6,7 +6,11 @@ import fetch from 'isomorphic-fetch';
 
 class App extends Component {
   render() {
-    return <div>This is my new react app</div>
+    return (
+      <div>
+        <p>This is my new react app</p>
+      </div>
+    )
   }
 }
 export default App;

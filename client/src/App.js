@@ -1,14 +1,23 @@
 import React, {Component} from 'react';
-import Players from './Players';
-import BlackCard from './BlackCard';
-import CardDisplay from './CardDisplay';
+import Room from './Room';
+import './App.css';
 import fetch from 'isomorphic-fetch';
 
 class App extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      maxUsers: 5,
+      numberOfUsers: 0,
+      users: {},
+      waitingRoom: true
+    }
+  }
   render() {
     return (
       <div>
-        <p>This is my new react app</p>
+        <Room maxUsers={this.state.maxUsers} numberOfUsers={this.state.numberOfUsers} waitingRoom={this.state.waitingRoom} />
+        <p></p>
       </div>
     )
   }

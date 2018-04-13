@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "start": "node server/server.js",
-    "s": "webpack-dev-server",
+    "serve": "webpack-dev-server",
     "webpack": "webpack"
   },
   "repository": {

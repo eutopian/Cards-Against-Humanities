@@ -1,0 +1,77 @@
+* {box-sizing: border-box;}
+
+.cards {
+    font-family: "Helvetica Neue", Helvetica, sans-serif;
+    width: auto;
+    font-weight: bold;
+    font-size: 2vh;
+    line-height: 20px;
+    cursor: pointer;
+    border-radius: 6px;
+    height: 25vh;
+    width: 18vh;
+    border: 2px solid black;
+}
+
+p {
+    margin: 8%;
+}
+
+.user {
+    grid-column: 1 / 3;
+    grid-row: 1;
+    border: 2px solid black;
+}
+
+.black {
+    background: black;
+    color: white;
+    margin: auto;
+}
+
+.black-div {
+    grid-column: 3 / 4;
+    grid-row: 2/ 4;
+}
+
+.bottom {
+    margin: auto;
+    height: 34vh;
+    width: 76.5%;
+    border: 2px solid black;
+    padding: 30px 0;
+    grid-column: 1/6;
+    grid-row: 5 / 7;
+}
+
+.white {
+    background: white;
+    color: black;
+    margin: 20px;
+    float: left;
+    display: absolute;
+}
+
+.players {
+    grid-column: 5/7;
+    grid-row: 1/4;
+    border: 2px solid black;
+}
+
+
+.wrapper {
+  max-width: 100%;
+  margin: 0 auto;
+}
+
+.wrapper {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    grid-gap: 10px;
+    grid-auto-rows: minmax(100px, auto);
+}
+
+
+
+
+

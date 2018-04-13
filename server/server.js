@@ -62,6 +62,8 @@ app.get('/getWhiteCardInfo', (req,res) => {
     });
 })
 
+app.post('/')
+
 app.use(express.static(__dirname +'./../'));
 app.listen(3000); 
 

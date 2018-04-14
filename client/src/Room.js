@@ -4,7 +4,7 @@ import BlackCard from './BlackCard';
 import CardDisplay from './CardDisplay';
 import JoinStartButton from './Join';
 
-const Room = ({addToUsedBlackPile, blackCards, maxUsers, numberOfUsers, startGame, add, waitingRoom, whiteCards, saveCards}) => {
+const Room = ({addToUsedBlackPile, blackCards, maxUsers, numberOfUsers, startGame, add, waitingRoom, whiteCards, saveCards, addJoinedUser}) => {
   const playing = () => {
     return (
       <div>
@@ -24,9 +24,9 @@ const Room = ({addToUsedBlackPile, blackCards, maxUsers, numberOfUsers, startGam
         <p> / 6 players</p> */}
         {/* <p id='slots'>Current {numberOfUsers}</p> */}
         {/* <button id='joinButton' type='button'>Join</button> */}
-        <p id='slots'>0</p>
+        <p id='slots'>{numberOfUsers}</p>
         {/* <p id='slots'>Current </p> <p id='userNum'>0</p> <p id='slots'> / {maxUsers} Max</p> */}
-        <JoinStartButton numberOfUsers={numberOfUsers} startGame={startGame} add={add}/>
+        <JoinStartButton numberOfUsers={numberOfUsers} startGame={startGame} add={add} addJoinedUser={addJoinedUser}/>
 
       </div>
     )

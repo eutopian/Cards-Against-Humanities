@@ -12,23 +12,24 @@ class App extends Component {
     this.state = {
       blackCards: [],
       maxUsers: 5,
-      numberOfUsers: 4,
+      numberOfUsers: null,
       usedBlackCards: [],
       usedWhiteCards: [],
       users: {},
       waitingRoom: true,
       endpoint: `http://127.0.0.1:3000`,
       whiteCards: [],
-      winner: false
+      winner: false,
     }
     this.addToUsedBlackPile = this.addToUsedBlackPile.bind(this);
-    this.componentWillMount = this.componentWillMount(this);
     this.startGame = this.startGame.bind(this);
-    this.add = this.add.bind(this)
-    this.saveCards = this.saveCards.bind(this)
+    this.saveCards = this.saveCards.bind(this);
+    this.addJoinedUser = this.addJoinedUser.bind(this);
+    this.loadJoinedUsers = this.loadJoinedUsers.bind(this);
   }
   
   componentWillMount() {
+    this.loadJoinedUsers();
     fetch('/getBlackCardInfo')
       .then(response => response.json())
       .then(data => {
@@ -45,11 +46,27 @@ class App extends Component {
       })
   }
 
+  add() {
+    let num = this.state.numberOfUsers + 1;
+    this.setState({
+      numberOfUsers: num
+    })
+  }
 
-  componentDidMount() {
+  addJoinedUser() {
     console.log('mounted!')
-    socket.on("FromAPI", (numOfUsers) => {
-      document.getElementById('slots').innerHTML = numOfUsers;
+    socket.emit('FromAPI')
+    socket.on("updateUsers", (numOfUsers) => {
+      console.log('numberofusers in componentdidmount', numOfUsers)
+      this.setState({ numberOfUsers: numOfUsers})
+    });
+  }
+
+  loadJoinedUsers() {
+    socket.emit('FromAPI2')
+    socket.on("updateUsers2", (numOfUsers) => {
+      console.log('numberofusers in componentdidmount', numOfUsers)
+      this.setState({ numberOfUsers: numOfUsers})
     });
   }
 
@@ -58,8 +75,7 @@ class App extends Component {
       data.savedCardsArr.push(data.currentCard)
     })
   }
-
-
+  
   startGame() {
     this.setState({
       waitingRoom: false
@@ -97,6 +113,7 @@ class App extends Component {
               waitingRoom={this.state.waitingRoom}
               whiteCards={this.state.whiteCards}
               saveCards={this.saveCards}
+              addJoinedUser={this.addJoinedUser}
             />;
     } else {
       room = <p>Loading</p>

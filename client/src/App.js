@@ -3,6 +3,7 @@ import Room from './Room';
 import './App.css';
 import fetch from 'isomorphic-fetch';
 import socketIOClient from "socket.io-client";
+import $ from 'jquery'
 
 class App extends Component {
   constructor(props) {
@@ -15,6 +16,7 @@ class App extends Component {
       usedWhiteCards: [],
       users: {},
       waitingRoom: true,
+      endpoint: `http://127.0.0.1:3000`,
       whiteCards: [],
       winner: false
     }
@@ -22,6 +24,7 @@ class App extends Component {
     this.componentWillMount = this.componentWillMount(this);
     this.startGame = this.startGame.bind(this);
     this.add = this.add.bind(this)
+    this.saveCards = this.saveCards.bind(this)
   }
   
   componentWillMount() {
@@ -48,6 +51,21 @@ class App extends Component {
     })
   }
 
+
+  componentDidMount() {
+    console.log('mounted!')
+    socket.on("FromAPI", (numOfUsers) => {
+      document.getElementById('slots').innerHTML = numOfUsers;
+    });
+  }
+
+  saveCards(){
+    socket.on('SaveCards', (data) => {
+      data.savedCardsArr.push(data.currentCard)
+    })
+  }
+
+
   startGame() {
     this.setState({
       waitingRoom: false
@@ -71,6 +89,7 @@ class App extends Component {
 //     console.log(this.state.numberOfUsers)
 //   }
   
+
   render() {
     let room;
     if (this.state.blackCards.length > 0 && this.state.whiteCards.length > 0) {
@@ -83,6 +102,7 @@ class App extends Component {
               add = {this.add}
               waitingRoom={this.state.waitingRoom}
               whiteCards={this.state.whiteCards}
+              saveCards={this.saveCards}
             />;
     } else {
       room = <p>Loading</p>

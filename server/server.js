@@ -63,24 +63,22 @@ app.get('/getWhiteCardInfo', (req,res) => {
 })
 
 // Socket.io setups
-
+let numOfUsers = 0
+let submittedCards = []
 io.on('connection', (socket) => {
-  console.log('a user connected');
-  addUser(socket);
+    numOfUsers++
+  io.emit("FromAPI",numOfUsers);
 
-  // socket.on('disconnect', () => {
-  //   console.log('user disconnected');
-  // });
+  socket.on('disconnect', () =>{
+      numOfUsers--;
+      io.emit('FromAPI',numOfUsers)
+  })
+
+  socket.on('saveSubmitedCards', (chosenCard) => {
+    io.emit('SaveCards', {savedCardsArr:submittedCards, currentCard:chosenCard})
+  })
 });
 
-
-const addUser = socket => {
-  try {
-    socket.emit("FromAPI"); 
-  } catch (error) {
-    console.error(`Error: ${error}`);
-  }
-};
 
 app.use(express.static(__dirname +'./../'));
 http.listen(3000, function(){

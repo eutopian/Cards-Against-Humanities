@@ -19,6 +19,13 @@
   margin: 80px auto 0 auto;
 }
 
+.bothButtons {
+  width: 100px;
+  height: 45px;
+  display: inline;
+  font-size: 1.5rem;
+}
+
 .joinButton:hover {
   background-color: white;
   color: green;
@@ -68,7 +75,7 @@
 }
 
 #whiteCard:hover {
-  -webkit-transform: scale(1.4);
+-webkit-transform: scale(1.4);
 -moz-transform: scale(1.4);
 -ms-transform: scale(1.4);
 -o-transform: scale(1.4);

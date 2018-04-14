@@ -1,10 +1,9 @@
 import React, {Component} from 'react';
-import Players from './Players';
-import BlackCard from './BlackCard';
-import CardDisplay from './CardDisplay';
+import Room from './Room';
+import './App.css';
 import fetch from 'isomorphic-fetch';
 import socketIOClient from "socket.io-client";
-import $ from 'jquery'
+import $ from 'jquery';
 
 class App extends Component {
   constructor(props) {
@@ -20,12 +19,16 @@ class App extends Component {
       endpoint: `http://127.0.0.1:3000`,
       whiteCards: [],
       winner: false,
+      submitted: false,
+      submittedCards: ["some text", "other text"], // edit text to display white cards submited
+      currentUser: {blackCardHolder: false, score:0} //needs to be created in websocket
     }
     this.addToUsedBlackPile = this.addToUsedBlackPile.bind(this);
     this.startGame = this.startGame.bind(this);
     this.saveCards = this.saveCards.bind(this);
     this.addJoinedUser = this.addJoinedUser.bind(this);
     this.loadJoinedUsers = this.loadJoinedUsers.bind(this);
+    this.submittedTrue = this.submittedTrue.bind(this);
   }
   
   componentWillMount() {
@@ -91,26 +94,34 @@ class App extends Component {
 //     socket.on("FromAPI", () => this.setState({ numberOfUsers: num }));
 //     console.log(this.state.numberOfUsers)
 //   }
-  
+
+
+submittedTrue () {
+    this.setState ({
+      submitted: true
+    })
+    console.log('inside subm')
+}
 
   render() {
     let room;
-    if (this.state.blackCards.length > 0 && this.state.whiteCards.length > 0) {
-      room = <Room
-              addToUsedBlackPile={this.addToUsedBlackPile}
-              blackCards={this.state.blackCards}
-              maxUsers={this.state.maxUsers}
-              numberOfUsers={this.state.numberOfUsers}
-              startGame={this.startGame}
-              add = {this.add}
-              waitingRoom={this.state.waitingRoom}
-              whiteCards={this.state.whiteCards}
-              saveCards={this.saveCards}
-              addJoinedUser={this.addJoinedUser}
-            />;
-    } else {
-      room = <p>Loading</p>
-    }
+    console.log(this.state, 'state')
+    room = <Room
+            currentUser= {this.state.currentUser}
+            addToUsedBlackPile={this.addToUsedBlackPile}
+            blackCards={this.state.blackCards}
+            maxUsers={this.state.maxUsers}
+            numberOfUsers={this.state.numberOfUsers}
+            startGame={this.startGame}
+            waitingRoom={this.state.waitingRoom}
+            whiteCards={this.state.whiteCards}
+            saveCards={this.saveCards}
+            addJoinedUser={this.addJoinedUser}
+            submittedTrue ={this.submittedTrue}
+            submitted = {this.state.submitted}
+            submittedCards ={this.state.submittedCards}
+          />;
+
     return (
       <div>
         {room}

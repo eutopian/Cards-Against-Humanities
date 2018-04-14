@@ -19,17 +19,16 @@
   margin: 80px auto 0 auto;
 }
 
-.bothButtons {
-  width: 100px;
-  height: 45px;
-  display: inline;
-  font-size: 1.5rem;
+.joinHide {
+  visibility: hidden;
 }
-
 .joinButton:hover {
   background-color: white;
   color: green;
   text-decoration: none;
+}
+.joinButton:focus, input[type="button"]:focus {
+    outline: none;
 }
 
 .room {
@@ -79,7 +78,7 @@
 -moz-transform: scale(1.4);
 -ms-transform: scale(1.4);
 -o-transform: scale(1.4);
-transform: scale(1.4);  
+transform: scale(1.4);
 }
 #whiteCardDisplayArea {
   bottom: 0;

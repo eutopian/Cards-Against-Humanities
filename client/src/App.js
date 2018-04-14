@@ -3,7 +3,6 @@ import Room from './Room';
 import './App.css';
 import fetch from 'isomorphic-fetch';
 import socketIOClient from "socket.io-client";
-import $ from 'jquery';
 
 class App extends Component {
   constructor(props) {
@@ -14,14 +13,16 @@ class App extends Component {
       numberOfUsers: null,
       usedBlackCards: [],
       usedWhiteCards: [],
-      users: {},
+      users: [],
       waitingRoom: true,
       endpoint: `http://127.0.0.1:3000`,
       whiteCards: [],
       winner: false,
       submitted: false,
       submittedCards: ["some text", "other text"], // edit text to display white cards submited
-      currentUser: {blackCardHolder: false, score:0} //needs to be created in websocket
+      clickedJoin: false,
+      turnBlack: false,
+      currentBlackCard: null
     }
     this.addToUsedBlackPile = this.addToUsedBlackPile.bind(this);
     this.startGame = this.startGame.bind(this);
@@ -30,38 +31,60 @@ class App extends Component {
     this.loadJoinedUsers = this.loadJoinedUsers.bind(this);
     this.submittedTrue = this.submittedTrue.bind(this);
   }
-  
+
+  // only one person will make the fetch request for the cards. This ensures the total deck of cards is
+  // consistent and shared across different instances of react render
   componentWillMount() {
     this.loadJoinedUsers();
-    fetch('/getBlackCardInfo')
-      .then(response => response.json())
-      .then(data => {
-        this.setState({
-          blackCards: data
-        });
-      });
-    fetch('/getWhiteCardInfo')
-      .then(response => response.json())
-      .then(data => {
-        this.setState({
-          whiteCards: data
-        });
-      })
   }
 
   addJoinedUser() {
     console.log('mounted!')
     socket.emit('FromAPI')
+    socket.on("updateUsers", (numOfUsers, players) => {
+      // console.log('numberofusers in componentdidmount', numOfUsers, players)
+      this.setState({ numberOfUsers: numOfUsers, clickedJoin: true, users: players})
+    });
+
+
+    socket.emit('JoinGame')
     socket.on("updateUsers", (numOfUsers) => {
-      console.log('numberofusers in componentdidmount', numOfUsers)
       this.setState({ numberOfUsers: numOfUsers})
     });
+    console.log(this.state.numberOfUsers)
+    if (this.state.numberOfUsers === 1) {
+      fetch('/getBlackCardInfo')
+        .then(response => response.json())
+        .then(data => {
+          this.setState({
+            blackCards: data
+          });
+          socket.emit('fetchedBlackCards', data)
+        });
+      fetch('/getWhiteCardInfo')
+        .then(response => response.json())
+        .then(data => {
+          this.setState({
+            whiteCards: data
+          });
+          socket.emit('fetchedWhiteCards', data)
+        })
+    }
+    socket.emit('mountedBlackCards');
+    socket.on('updateBlackCards', (bc) => {
+      this.setState({ blackCards: bc});
+      this.setState({ currentBlackCard: bc[0] });
+      this.setState({ usedBlackCards: bc[0] })
+    })
+    socket.emit('mountedWhiteCards');
+    socket.on('updateWhiteCards', (whiteCards) => {
+      this.setState({ whiteCards: whiteCards})
+    })
   }
 
   loadJoinedUsers() {
     socket.emit('FromAPI2')
     socket.on("updateUsers2", (numOfUsers) => {
-      console.log('numberofusers in componentdidmount', numOfUsers)
       this.setState({ numberOfUsers: numOfUsers})
     });
   }
@@ -71,8 +94,9 @@ class App extends Component {
       data.savedCardsArr.push(data.currentCard)
     })
   }
-  
+
   startGame() {
+    socket.emit('changing to start');
     this.setState({
       waitingRoom: false
     })
@@ -85,43 +109,47 @@ class App extends Component {
     })
   }
 
-//   componentDidMount() {
-//     debugger
-//     console.log(this.state.numberOfUsers)
-//     const { endpoint } = this.state;
-//     const socket = socketIOClient(endpoint);
-//     let num = this.state.numberOfUsers++
-//     socket.on("FromAPI", () => this.setState({ numberOfUsers: num }));
-//     console.log(this.state.numberOfUsers)
-//   }
-
-
 submittedTrue () {
-    this.setState ({
-      submitted: true
+  this.setState ({
+    submitted: true
+  })
+  console.log('inside subm')
+} 
+
+  componentDidMount() {
+    socket.on('starting game', () => {
+      this.setState({
+        waitingRoom: false,
+      })
     })
-    console.log('inside subm')
-}
+    socket.on('updateUsers', (numOfUsers) => {
+      this.setState({
+        numberOfUsers: numOfUsers
+      })
+    })
+  }
+
 
   render() {
-    let room;
-    console.log(this.state, 'state')
-    room = <Room
-            currentUser= {this.state.currentUser}
-            addToUsedBlackPile={this.addToUsedBlackPile}
-            blackCards={this.state.blackCards}
-            maxUsers={this.state.maxUsers}
-            numberOfUsers={this.state.numberOfUsers}
-            startGame={this.startGame}
-            waitingRoom={this.state.waitingRoom}
-            whiteCards={this.state.whiteCards}
-            saveCards={this.saveCards}
-            addJoinedUser={this.addJoinedUser}
-            submittedTrue ={this.submittedTrue}
-            submitted = {this.state.submitted}
-            submittedCards ={this.state.submittedCards}
-          />;
-
+    let room = <Room
+              addToUsedBlackPile={this.addToUsedBlackPile}
+              blackCards={this.state.blackCards}
+              maxUsers={this.state.maxUsers}
+              numberOfUsers={this.state.numberOfUsers}
+              startGame={this.startGame}
+              add = {this.add}
+              waitingRoom={this.state.waitingRoom}
+              whiteCards={this.state.whiteCards}
+              saveCards={this.saveCards}
+              addJoinedUser={this.addJoinedUser}
+              clickedJoin={this.state.clickedJoin}
+              users={this.state.users}
+              turnBlack={this.state.turnBlack}
+              currentBlackCard={this.state.currentBlackCard}
+              submittedTrue ={this.submittedTrue}
+              submitted = {this.state.submitted}
+              submittedCards ={this.state.submittedCards}
+            />;
     return (
       <div>
         {room}

@@ -3,10 +3,10 @@ import WhiteTurn from './WhiteTurn';
 import BlackTurn from './BlackTurn';
 import WhiteCard from './WhiteCard';
 
-const CardDisplay = ({currentUser, whiteCards, submitted, submittedTrue, submittedCards}) => {
+const CardDisplay = ({ whiteCards, submitted, submittedTrue, submittedCards, turnBlack}) => {
   const whiteCardsArr = [];
 
-  if (currentUser.blackCardHolder) {
+  if (turnBlack) {
     if (submittedCards.length) {
       for (let i = 0; i < submittedCards.length; i++) {
         whiteCardsArr.push(
@@ -28,7 +28,6 @@ const CardDisplay = ({currentUser, whiteCards, submitted, submittedTrue, submitt
       }
     }
 
-    console.log(submitted)
   return (
     <div id='whiteCardDisplayArea' >
       {whiteCardsArr}

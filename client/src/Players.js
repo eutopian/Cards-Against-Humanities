@@ -1,10 +1,14 @@
-import React, { PropTypes } from  'react';
+import React from 'react';
+import Player from './Player';
 
-const Players = (props) => {
-  const {eachUser, score} = props;
+const Players = ({users}) => {
+  let list = [];
 
+  for (let i = 0; i < 5; i++) {
+    list.push(<Player key={i} users={users} />)
+  }
   return (
-    <div id='playerList'>{}:{}</div>
+    <div id='playerList'>Player List{list}</div>
   )
 }
 

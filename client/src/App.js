@@ -3,7 +3,6 @@ import Room from './Room';
 import './App.css';
 import fetch from 'isomorphic-fetch';
 import socketIOClient from "socket.io-client";
-import $ from 'jquery'
 
 class App extends Component {
   constructor(props) {
@@ -19,6 +18,7 @@ class App extends Component {
       endpoint: `http://127.0.0.1:3000`,
       whiteCards: [],
       winner: false,
+      currentBlackCard: null
     }
     this.addToUsedBlackPile = this.addToUsedBlackPile.bind(this);
     this.startGame = this.startGame.bind(this);
@@ -26,45 +26,52 @@ class App extends Component {
     this.addJoinedUser = this.addJoinedUser.bind(this);
     this.loadJoinedUsers = this.loadJoinedUsers.bind(this);
   }
-  
+
+  // only one person will make the fetch request for the cards. This ensures the total deck of cards is 
+  // consistent and shared across different instances of react render
   componentWillMount() {
     this.loadJoinedUsers();
-    fetch('/getBlackCardInfo')
-      .then(response => response.json())
-      .then(data => {
-        this.setState({
-          blackCards: data
-        });
-      });
-    fetch('/getWhiteCardInfo')
-      .then(response => response.json())
-      .then(data => {
-        this.setState({
-          whiteCards: data
-        });
-      })
-  }
-
-  add() {
-    let num = this.state.numberOfUsers + 1;
-    this.setState({
-      numberOfUsers: num
-    })
   }
 
   addJoinedUser() {
-    console.log('mounted!')
-    socket.emit('FromAPI')
+    socket.emit('JoinGame')
     socket.on("updateUsers", (numOfUsers) => {
-      console.log('numberofusers in componentdidmount', numOfUsers)
       this.setState({ numberOfUsers: numOfUsers})
     });
+    console.log(this.state.numberOfUsers)
+    if (this.state.numberOfUsers === 1) {
+      fetch('/getBlackCardInfo')
+        .then(response => response.json())
+        .then(data => {
+          this.setState({
+            blackCards: data
+          });
+          socket.emit('fetchedBlackCards', data)
+        });
+      fetch('/getWhiteCardInfo')
+        .then(response => response.json())
+        .then(data => {
+          this.setState({
+            whiteCards: data
+          });
+          socket.emit('fetchedWhiteCards', data)
+        })
+    }
+    socket.emit('mountedBlackCards');
+    socket.on('updateBlackCards', (bc) => {
+      this.setState({ blackCards: bc});
+      this.setState({ currentBlackCard: bc[0] });
+      this.setState({ usedBlackCards: bc[0] })
+    })
+    socket.emit('mountedWhiteCards');
+    socket.on('updateWhiteCards', (whiteCards) => {
+      this.setState({ whiteCards: whiteCards})
+    })
   }
 
   loadJoinedUsers() {
     socket.emit('FromAPI2')
     socket.on("updateUsers2", (numOfUsers) => {
-      console.log('numberofusers in componentdidmount', numOfUsers)
       this.setState({ numberOfUsers: numOfUsers})
     });
   }
@@ -88,21 +95,8 @@ class App extends Component {
     })
   }
 
-//   componentDidMount() {
-//     debugger
-//     console.log(this.state.numberOfUsers)
-//     const { endpoint } = this.state;
-//     const socket = socketIOClient(endpoint);
-//     let num = this.state.numberOfUsers++
-//     socket.on("FromAPI", () => this.setState({ numberOfUsers: num }));
-//     console.log(this.state.numberOfUsers)
-//   }
-  
-
   render() {
-    let room;
-    if (this.state.blackCards.length > 0 && this.state.whiteCards.length > 0) {
-      room = <Room
+    let room = <Room
               addToUsedBlackPile={this.addToUsedBlackPile}
               blackCards={this.state.blackCards}
               maxUsers={this.state.maxUsers}
@@ -113,10 +107,9 @@ class App extends Component {
               whiteCards={this.state.whiteCards}
               saveCards={this.saveCards}
               addJoinedUser={this.addJoinedUser}
+              currentBlackCard={this.state.currentBlackCard}
+              
             />;
-    } else {
-      room = <p>Loading</p>
-    }
     return (
       <div>
         {room}

@@ -1,16 +1,17 @@
 import React from 'react';
-import WhiteTurn from './WhiteTurn';
-import BlackTurn from './BlackTurn';
 
 const CardDisplay = (props) => {
   const {text} = props;
 
   return (
-    <div class="cards white">
+    <div className="cards white">
       <p>{text}</p>
+      <button class="button" type="button">Submit</button>
     </div>
 
   )
 }
 
 export default CardDisplay;
+
+//current game display (before submit) **only for individuals who are not the judge

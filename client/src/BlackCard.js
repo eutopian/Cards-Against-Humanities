@@ -1,12 +1,12 @@
 import React from 'react';
 
 const BlackCard = (props) => {
-  const {blackText} = props;
+  const {blackCard} = props;
 
   return (
-    <div class="black-div">
-      <div class="cards black">
-          <p> {blackText}</p>
+    <div className="black-div">
+      <div className="cards black">
+          <p> {blackCard}</p>
       </div>
     </div>
   )

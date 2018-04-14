@@ -3,29 +3,28 @@ import Players from './Players';
 import BlackCard from './BlackCard';
 import CardDisplay from './CardDisplay';
 import Role from './Role';
+import Role from './Submitted';
 import fetch from 'isomorphic-fetch';
 
 class App extends Component {
-  const { users, blackText} = this.state;
-
-  const playerElements = users.map((eachUser, i) => (
-    <Players key={i} eachUser={eachUser}/>
-  ));
-
-  const playerElements = users.map((eachUser, i) => (
-    <Players key={i} eachUser={eachUser.name} score={eachUser.score} id={i} />
-  ));
-
-  const whiteElements = whiteText.map((text, i) => (
-    <CardDisplay key={i} text={text} id={i} />
-  ));
+  constructor(props) {
+    super(props);
+   
+  }
 
   render() {
+    const { users, blackCard, currentPlayer, subWhiteCards} = this.state;
+    
+    const eachUser = users.map((eachUser, i) => (
+      <Role key={i} eachUser={eachUser} id={i} blackCard={blackCard} currentPlayer={currentPlayer} users={users} subWhiteCards={subWhiteCards}/>
+    ));
+
     return (
-      <div class="wrapper">
-        {Role}
+      <div className="wrapper">
+        {eachUser}
       </div>
     )
   }
 }
+
 export default App;

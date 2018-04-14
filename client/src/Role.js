@@ -1,47 +1,19 @@
 import React, { PropTypes } from  'react';
+import BlackTurn from './BlackTurn';
+import WhiteTurn from './WhiteTurn';
 
-const Players = (props) => {
-  const { eachUser, score} = props;
+const Role= (props) => {
+  const {currentPlayer, eachUser, blackCard, subWhiteCards} = props;
 
-  if (eachUser.blackCardJudge) {
+  if (currentPlayer.blackCardJudge) {
     return (
-        <div class="user">
-        {currentPlayer}
-      </div>
-        {<BlackCard blackText={blackText}/>}
-      <div class="bottom ">
-       {whiteElements}
-      </div>
-      <div class="players ">
-        {playerElements}
-      </div>
-       )
+        {<BlackTurn blackCard={blackCard} eachUser={eachUser} currentPlayer={currentPlayer} subWhiteCard={subWhiteCards}/>}
+    )
   } else {
     return (
-        <div class="user">
-          {currentPlayer}
-        </div>
-          {<BlackCard blackText={blackText}/>}
-        <div class="bottom ">
-         {whiteElements}
-        </div>
-        <div class="players ">
-          {playerElements}
-        </div>
-       )
+        {<WhiteTurn blackCard={blackCard} playerElements={playerElements} currentPlayer={currentPlayer} subWhiteCard={subWhiteCards}/>}
+    )
   }
-  
 }
 
-export default Players;
-
-<div class="user">
-          {currentPlayer}
-        </div>
-          {<BlackCard blackText={blackText}/>}
-        <div class="bottom ">
-         {whiteElements}
-        </div>
-        <div class="players ">
-          {playerElements}
-        </div>
+export default Role;

@@ -2,7 +2,7 @@ import React from 'react';
 
 const Players = () => {
   return (
-    <div>Player List</div>
+    <div id='playerList'>Player List</div>
   )
 }
 

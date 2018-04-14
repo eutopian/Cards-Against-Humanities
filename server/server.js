@@ -64,15 +64,18 @@ app.get('/getWhiteCardInfo', (req,res) => {
 
 // Socket.io setups
 let numOfUsers = 0
+let submittedCards = []
 io.on('connection', (socket) => {
     numOfUsers++
-  console.log('a user connected');
   io.emit("FromAPI",numOfUsers);
 
   socket.on('disconnect', () =>{
-      console.log('disconnect!')
       numOfUsers--;
       io.emit('FromAPI',numOfUsers)
+  })
+
+  socket.on('saveSubmitedCards', (chosenCard) => {
+    io.emit('SaveCards', {savedCardsArr:submittedCards, currentCard:chosenCard})
   })
 });
 

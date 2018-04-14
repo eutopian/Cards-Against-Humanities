@@ -63,13 +63,20 @@ app.get('/getWhiteCardInfo', (req,res) => {
 })
 
 // Socket.io setups
-let numOfUsers = 0
-let submittedCards = []
+let numOfUsers = 0;
+let submittedCards = [];
+let players = [];
 io.on('connection', (socket) => {
     // console.log('connected')
   socket.on('FromAPI', () => {
     numOfUsers = numOfUsers + 1;
-    io.emit("updateUsers",numOfUsers);
+    let user = {id: numOfUsers};
+    players.push(user);
+    io.emit("updateUsers", numOfUsers, players);
+  })
+
+  socket.on('changing to start', () => {
+    io.emit('starting game');
   })
 
   socket.on('disconnect', () => {

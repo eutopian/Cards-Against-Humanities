@@ -1,8 +1,8 @@
 import React from 'react';
 
-const JoinStartButton = ({numberOfUsers, startGame, add, addJoinedUser}) => {
+const JoinStartButton = ({numberOfUsers, startGame, add, addJoinedUser, clickedJoin}) => {
   const join = () => {
-    return <button className='joinButton' onClick={addJoinedUser} type='button'>Join</button>;
+    return <button className={clickedJoin ? 'joinHide' : 'joinButton'} onClick={addJoinedUser} type='button'>Join</button>;
   }
 
   const start = () => {

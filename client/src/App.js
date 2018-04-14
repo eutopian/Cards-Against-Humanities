@@ -3,7 +3,6 @@ import Room from './Room';
 import './App.css';
 import fetch from 'isomorphic-fetch';
 import socketIOClient from "socket.io-client";
-import $ from 'jquery'
 
 class App extends Component {
   constructor(props) {
@@ -14,11 +13,13 @@ class App extends Component {
       numberOfUsers: null,
       usedBlackCards: [],
       usedWhiteCards: [],
-      users: {},
+      users: [],
       waitingRoom: true,
       endpoint: `http://127.0.0.1:3000`,
       whiteCards: [],
       winner: false,
+      clickedJoin: false,
+      turnBlack: false,
     }
     this.addToUsedBlackPile = this.addToUsedBlackPile.bind(this);
     this.startGame = this.startGame.bind(this);
@@ -26,7 +27,7 @@ class App extends Component {
     this.addJoinedUser = this.addJoinedUser.bind(this);
     this.loadJoinedUsers = this.loadJoinedUsers.bind(this);
   }
-  
+
   componentWillMount() {
     this.loadJoinedUsers();
     fetch('/getBlackCardInfo')
@@ -55,10 +56,12 @@ class App extends Component {
   addJoinedUser() {
     console.log('mounted!')
     socket.emit('FromAPI')
-    socket.on("updateUsers", (numOfUsers) => {
-      console.log('numberofusers in componentdidmount', numOfUsers)
-      this.setState({ numberOfUsers: numOfUsers})
+    socket.on("updateUsers", (numOfUsers, players) => {
+      // console.log('numberofusers in componentdidmount', numOfUsers, players)
+      this.setState({ numberOfUsers: numOfUsers, clickedJoin: true, users: players})
     });
+
+
   }
 
   loadJoinedUsers() {
@@ -74,8 +77,9 @@ class App extends Component {
       data.savedCardsArr.push(data.currentCard)
     })
   }
-  
+
   startGame() {
+    socket.emit('changing to start');
     this.setState({
       waitingRoom: false
     })
@@ -88,16 +92,19 @@ class App extends Component {
     })
   }
 
-//   componentDidMount() {
-//     debugger
-//     console.log(this.state.numberOfUsers)
-//     const { endpoint } = this.state;
-//     const socket = socketIOClient(endpoint);
-//     let num = this.state.numberOfUsers++
-//     socket.on("FromAPI", () => this.setState({ numberOfUsers: num }));
-//     console.log(this.state.numberOfUsers)
-//   }
-  
+  componentDidMount() {
+    socket.on('starting game', () => {
+      this.setState({
+        waitingRoom: false,
+      })
+    })
+    socket.on('updateUsers', (numOfUsers) => {
+      this.setState({
+        numberOfUsers: numOfUsers
+      })
+    })
+  }
+
 
   render() {
     let room;
@@ -113,6 +120,9 @@ class App extends Component {
               whiteCards={this.state.whiteCards}
               saveCards={this.saveCards}
               addJoinedUser={this.addJoinedUser}
+              clickedJoin={this.state.clickedJoin}
+              users={this.state.users}
+              turnBlack={this.state.turnBlack}
             />;
     } else {
       room = <p>Loading</p>

@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import Room from './Room';
 import './App.css';
 import fetch from 'isomorphic-fetch';
+import socketIOClient from "socket.io-client";
 
 class App extends Component {
   constructor(props) {
@@ -22,7 +23,7 @@ class App extends Component {
     this.startGame = this.startGame.bind(this);
     this.add = this.add.bind(this)
   }
-
+  
   componentWillMount() {
     fetch('/getBlackCardInfo')
       .then(response => response.json())
@@ -60,6 +61,16 @@ class App extends Component {
     })
   }
 
+//   componentDidMount() {
+//     debugger
+//     console.log(this.state.numberOfUsers)
+//     const { endpoint } = this.state;
+//     const socket = socketIOClient(endpoint);
+//     let num = this.state.numberOfUsers++
+//     socket.on("FromAPI", () => this.setState({ numberOfUsers: num }));
+//     console.log(this.state.numberOfUsers)
+//   }
+  
   render() {
     let room;
     if (this.state.blackCards.length > 0 && this.state.whiteCards.length > 0) {

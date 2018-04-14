@@ -5,9 +5,11 @@ const mongoose = require('mongoose');
 const path = require('path');
 const bodyParser = require('body-parser');
 const chance = require('chance').Chance();
+const http = require('http').Server(app)
+const io = require('socket.io')(http);
 
 // Import mongoose models
-const newcards = require('./db/CardsModel');
+const newcards = require('./cards/cardModel');
 
 // MongoDB Information
 const mongoUsername = process.env.MONGOUSER
@@ -27,8 +29,6 @@ function getRandomCards(maxNum,num){
 }
 
 app.use(bodyParser.urlencoded({ extended: true }));
-
-app.get('/')
 
 // Get all the black cards information from MongoDB and fetch 21 black cards
 // 5 players max
@@ -62,7 +62,29 @@ app.get('/getWhiteCardInfo', (req,res) => {
     });
 })
 
+// Socket.io setups
+
+io.on('connection', (socket) => {
+  console.log('a user connected');
+  addUser(socket);
+
+  // socket.on('disconnect', () => {
+  //   console.log('user disconnected');
+  // });
+});
+
+
+const addUser = socket => {
+  try {
+    socket.emit("FromAPI"); 
+  } catch (error) {
+    console.error(`Error: ${error}`);
+  }
+};
+
 app.use(express.static(__dirname +'./../'));
-app.listen(3000); 
+http.listen(3000, function(){
+  console.log('listening on *:3000');
+});
 
 module.exports = app;

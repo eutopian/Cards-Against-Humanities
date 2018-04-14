@@ -1,0 +1,98 @@
+/* Main Page Room List */
+#slots {
+  font-family: system-ui;
+  font-size: 2rem;
+  text-align: center;
+  margin-top: 33%;
+}
+.joinButton {
+  background-color: green;
+  color: white;
+  width: 200px;
+  height: 75px;
+  border-radius: 30px;
+  bottom: 0;
+  font-size: 3rem;
+  text-align: center;
+  position: relative;
+  display: block;
+  margin: 80px auto 0 auto;
+}
+
+.joinHide {
+  visibility: hidden;
+}
+.joinButton:hover {
+  background-color: white;
+  color: green;
+  text-decoration: none;
+}
+.joinButton:focus, input[type="button"]:focus {
+    outline: none;
+}
+
+.room {
+  width: 300px;
+  height: 300px;
+  border: 1px solid black;
+  border-radius: 5px;
+  position: relative;
+}
+
+/* In-game */
+#blackCard {
+  background-color: black;
+  border-radius: 15px;
+  border: 1px solid black;
+  color: white;
+  font-family: helvetica;
+  font-weight: bolder;
+  font-size: 26px;
+  height: 400px;
+  margin: auto;
+  padding: 30px;
+  position: relative;
+  text-align: left;
+  width: 250px;
+}
+
+#whiteCard {
+  background-color: white;
+  border-radius: 15px;
+  border: 1px solid black;
+  color: black;
+  display: inline-block;
+  font-family: helvetica;
+  font-weight: bolder;
+  font-size: 13px;
+  height: 200px;
+  margin-right: 15px;
+  padding: 30px;
+  position: relative;
+  text-align: left;
+  width: 125px;
+}
+
+#whiteCard:hover {
+  -webkit-transform: scale(1.4);
+-moz-transform: scale(1.4);
+-ms-transform: scale(1.4);
+-o-transform: scale(1.4);
+transform: scale(1.4);
+}
+#whiteCardDisplayArea {
+  bottom: 0;
+  border: 1px solid black;
+  display: inline-block;
+  height: 300px;
+  /* margin: auto; */
+  position: absolute;
+  text-align: center;
+  width: 100%;
+}
+#playerList {
+  border: 1px solid black;
+  float: right;
+  height: 500px;
+  width: 200px;
+}

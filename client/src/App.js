@@ -13,11 +13,13 @@ class App extends Component {
       numberOfUsers: null,
       usedBlackCards: [],
       usedWhiteCards: [],
-      users: {},
+      users: [],
       waitingRoom: true,
       endpoint: `http://127.0.0.1:3000`,
       whiteCards: [],
       winner: false,
+      clickedJoin: false,
+      turnBlack: false,
       currentBlackCard: null
     }
     this.addToUsedBlackPile = this.addToUsedBlackPile.bind(this);
@@ -27,13 +29,21 @@ class App extends Component {
     this.loadJoinedUsers = this.loadJoinedUsers.bind(this);
   }
 
-  // only one person will make the fetch request for the cards. This ensures the total deck of cards is 
+  // only one person will make the fetch request for the cards. This ensures the total deck of cards is
   // consistent and shared across different instances of react render
   componentWillMount() {
     this.loadJoinedUsers();
   }
 
   addJoinedUser() {
+    console.log('mounted!')
+    socket.emit('FromAPI')
+    socket.on("updateUsers", (numOfUsers, players) => {
+      // console.log('numberofusers in componentdidmount', numOfUsers, players)
+      this.setState({ numberOfUsers: numOfUsers, clickedJoin: true, users: players})
+    });
+
+
     socket.emit('JoinGame')
     socket.on("updateUsers", (numOfUsers) => {
       this.setState({ numberOfUsers: numOfUsers})
@@ -81,8 +91,9 @@ class App extends Component {
       data.savedCardsArr.push(data.currentCard)
     })
   }
-  
+
   startGame() {
+    socket.emit('changing to start');
     this.setState({
       waitingRoom: false
     })
@@ -94,6 +105,20 @@ class App extends Component {
       usedBlackCards: this.state.usedBlackCards.push(card)
     })
   }
+
+  componentDidMount() {
+    socket.on('starting game', () => {
+      this.setState({
+        waitingRoom: false,
+      })
+    })
+    socket.on('updateUsers', (numOfUsers) => {
+      this.setState({
+        numberOfUsers: numOfUsers
+      })
+    })
+  }
+
 
   render() {
     let room = <Room
@@ -107,8 +132,11 @@ class App extends Component {
               whiteCards={this.state.whiteCards}
               saveCards={this.saveCards}
               addJoinedUser={this.addJoinedUser}
+              clickedJoin={this.state.clickedJoin}
+              users={this.state.users}
+              turnBlack={this.state.turnBlack}
               currentBlackCard={this.state.currentBlackCard}
-              
+
             />;
     return (
       <div>

@@ -46,13 +46,6 @@ class App extends Component {
       })
   }
 
-  add() {
-    let num = this.state.numberOfUsers + 1;
-    this.setState({
-      numberOfUsers: num
-    })
-  }
-
   addJoinedUser() {
     console.log('mounted!')
     socket.emit('FromAPI')

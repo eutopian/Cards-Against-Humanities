@@ -4,12 +4,13 @@ import BlackCard from './BlackCard';
 import CardDisplay from './CardDisplay';
 import JoinStartButton from './Join';
 
-const Room = ({addToUsedBlackPile, blackCards, maxUsers, numberOfUsers, startGame, add, waitingRoom, whiteCards, saveCards, addJoinedUser, clickedJoin, users}) => {
+
+const Room = ({addToUsedBlackPile, blackCards, maxUsers, numberOfUsers, startGame, add, waitingRoom, whiteCards, saveCards, addJoinedUser, currentBlackCard, clickedJoin}) => {
   const playing = () => {
     return (
       <div>
-        <Players users={users}/>
-        <BlackCard addToUsedBlackPile={addToUsedBlackPile} blackCards={blackCards} />
+        <Players />
+        <BlackCard addToUsedBlackPile={addToUsedBlackPile} blackCards={blackCards} currentBlackCard={currentBlackCard}/>
         <CardDisplay whiteCards={whiteCards}/>
       </div>
     )

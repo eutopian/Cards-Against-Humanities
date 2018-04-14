@@ -8,7 +8,7 @@ const JoinStartButton = ({numberOfUsers, startGame, add, addJoinedUser, clickedJ
   const start = () => {
     return <button className='joinButton' onClick={startGame} type='button'>Start</button>;
   }
-  let button = numberOfUsers === 5 ? start() : join();
+  let button = numberOfUsers >= 5 ? start() : join();
   return (
     <div>
       {button}

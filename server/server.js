@@ -66,9 +66,11 @@ app.get('/getWhiteCardInfo', (req,res) => {
 let numOfUsers = 0;
 let submittedCards = [];
 let players = [];
+let blackCards = []
+let whiteCards = []
 io.on('connection', (socket) => {
     // console.log('connected')
-  socket.on('FromAPI', () => {
+  socket.on('JoinGame', () => {
     numOfUsers = numOfUsers + 1;
     let user = {id: numOfUsers};
     players.push(user);
@@ -77,21 +79,39 @@ io.on('connection', (socket) => {
 
   socket.on('changing to start', () => {
     io.emit('starting game');
+    io.emit("updateUsers", numOfUsers);
   })
 
   socket.on('disconnect', () => {
     console.log('discounnected!')
     numOfUsers = numOfUsers - 1;
-    io.emit('FromAPI',numOfUsers)
+    io.emit('JoinGame', numOfUsers)
   })
 
 //   socket.on('currentUser', () => {
 //     io.emit('updateUsers',numOfUsers)
 //   })
   socket.on('FromAPI2', () => {
-    io.emit("updateUsers2",numOfUsers);
+    io.emit("updateUsers2", numOfUsers);
   })
 
+  socket.on('fetchedBlackCards', (data) => {
+    blackCards = data
+    io.emit('updateBlackCards', blackCards)
+  })
+
+  socket.on('fetchedWhiteCards', (data) => {
+    whiteCards = data
+    io.emit('updateWhiteCards', whiteCards)
+  })
+
+  socket.on('mountedBlackCards', () => {
+    io.emit('updateBlackCards', blackCards)
+  })
+
+  socket.on('mountedWhiteCards', () => {
+    io.emit('updateWhiteCards', whiteCards)
+  })
 
 //   socket.on('saveSubmitedCards', (chosenCard) => {
 //     io.emit('SaveCards', {savedCardsArr:submittedCards, currentCard:chosenCard})

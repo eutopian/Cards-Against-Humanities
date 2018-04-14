@@ -63,10 +63,18 @@ app.get('/getWhiteCardInfo', (req,res) => {
 })
 
 // Socket.io setups
-
+let num = 0
 io.on('connection', (socket) => {
+  num++
   console.log('a user connected');
-  addUser(socket);
+  io.emit("FromAPI",num);
+
+  socket.on('disconnect', () =>{
+      console.log('disconnect!')
+      num--;
+      io.emit('FromAPI',num)
+  })
+//   addUser(socket);
 
   // socket.on('disconnect', () => {
   //   console.log('user disconnected');
@@ -74,13 +82,13 @@ io.on('connection', (socket) => {
 });
 
 
-const addUser = socket => {
-  try {
-    socket.emit("FromAPI"); 
-  } catch (error) {
-    console.error(`Error: ${error}`);
-  }
-};
+// const addUser = socket => {
+//   try {
+//     socket.emit("FromAPI"); 
+//   } catch (error) {
+//     console.error(`Error: ${error}`);
+//   }
+// };
 
 app.use(express.static(__dirname +'./../'));
 http.listen(3000, function(){

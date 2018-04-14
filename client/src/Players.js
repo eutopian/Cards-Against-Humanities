@@ -4,7 +4,7 @@ const Players = (props) => {
   const {eachUser, score} = props;
 
   return (
-    <div id='playerList'>Player List</div>
+    <div id='playerList'>{}:{}</div>
   )
 }
 

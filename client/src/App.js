@@ -18,36 +18,11 @@ class App extends Component {
   }
 
   componentDidMount() {
-    
-    // console.log(this.state.numberOfUsers)
-    // const { endpoint } = this.state;
-    // const socket = socketIOClient(endpoint);
-    // socket = io.connect();
-    // const socket = socketIOClient(endpoint);
-    // let num = this.state.numberOfUsers++
-    // console.log(num)
-    // socket.on("FromAPI", () => this.setState({ numberOfUsers: num }));
-    socket.on("FromAPI", (num) => {
-      // setInterval(()=>{
-        // console.log(document.getElementById('slots').innerHTML)
-
-        // let num = document.getElementById('slots').innerHTML + 1;
-        // console.log(num)
-        document.getElementById('slots').innerHTML = num;
+    socket.on("FromAPI", (numOfUsers) => {
+        document.getElementById('slots').innerHTML = numOfUsers;
       });
-  
-    
-    // console.log(this.state.numberOfUsers)
   }
-  
-  componentDidUpdate() {
 
-      // },500)
-      
-      // var $usernameDiv = $('<p id="slots"/>')
-      // .text("Current", num, '/' )
-  
-  }
   render() {
     return (
       <div>

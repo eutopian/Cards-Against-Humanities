@@ -16,7 +16,9 @@ const Room = ({maxUsers, numberOfUsers, waitingRoom}) => {
   const waiting = () => {
     return (
       <div className='room'>
+        <p> Current </p>
         <p id='slots'>0</p>
+        <p> / 6 players</p>
         {/* <p id='slots'>Current {numberOfUsers}</p> */}
         <button id='joinButton' type='button'>Join</button>
       </div>

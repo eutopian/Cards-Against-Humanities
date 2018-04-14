@@ -1,12 +1,9 @@
 import React from 'react';
 
-const BlackCard = ({blackCards}) => {
-  let blackCard = blackCards[Math.floor(Math.random() * blackCards.length - 1)];
-  let blackCardDisplay = blackCard.CardInfo;
-
+const BlackCard = ({blackCards, currentBlackCard}) => {
   return (
     <div id='blackCard'>
-      {blackCardDisplay}
+      {currentBlackCard.CardInfo}
     </div>
   )
 }

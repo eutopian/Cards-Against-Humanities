@@ -1,8 +1,14 @@
 import React from 'react';
 
+
 const BlackTurn = () => {
+
+
+  
   return (
-    <div>Black turn</div>
+    <div> 
+
+  </div>
   )
 }
 

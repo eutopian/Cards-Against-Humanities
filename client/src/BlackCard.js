@@ -1,9 +1,11 @@
 import React from 'react';
 
-const BlackCard = ({blackCards, currentBlackCard}) => {
+const BlackCard = ({currentBlackCard}) => {
+  var currBlackCard = currentBlackCard.CardInfo;
+
   return (
     <div id='blackCard'>
-      {currentBlackCard.CardInfo}
+     <p> {currBlackCard} </p>
     </div>
   )
 }

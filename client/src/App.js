@@ -18,6 +18,8 @@ class App extends Component {
       endpoint: `http://127.0.0.1:3000`,
       whiteCards: [],
       winner: false,
+      submitted: false,
+      submittedCards: ["some text", "other text"], // edit text to display white cards submited
       clickedJoin: false,
       turnBlack: false,
       currentBlackCard: null
@@ -27,6 +29,7 @@ class App extends Component {
     this.saveCards = this.saveCards.bind(this);
     this.addJoinedUser = this.addJoinedUser.bind(this);
     this.loadJoinedUsers = this.loadJoinedUsers.bind(this);
+    this.submittedTrue = this.submittedTrue.bind(this);
   }
 
   // only one person will make the fetch request for the cards. This ensures the total deck of cards is
@@ -106,6 +109,13 @@ class App extends Component {
     })
   }
 
+submittedTrue () {
+  this.setState ({
+    submitted: true
+  })
+  console.log('inside subm')
+} 
+
   componentDidMount() {
     socket.on('starting game', () => {
       this.setState({
@@ -136,7 +146,9 @@ class App extends Component {
               users={this.state.users}
               turnBlack={this.state.turnBlack}
               currentBlackCard={this.state.currentBlackCard}
-
+              submittedTrue ={this.submittedTrue}
+              submitted = {this.state.submitted}
+              submittedCards ={this.state.submittedCards}
             />;
     return (
       <div>
@@ -145,4 +157,5 @@ class App extends Component {
     )
   }
 }
+
 export default App;

@@ -1,9 +1,15 @@
 import React from 'react';
+import Players from './Players';
+import BlackCard from './BlackCard';
+import CardDisplay from './CardDisplay';
 
-const WhiteTurn = () => {
+
+const WhiteTurn = (props) => {
+
   return (
-    <div>White turn</div>
+ <div></div>
   )
 }
+
 
 export default WhiteTurn;
